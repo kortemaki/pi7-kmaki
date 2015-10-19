@@ -12,6 +12,19 @@ import org.apache.uima.jcas.cas.TOP;
 
 public class TypeUtils {
 	
+	public <T> boolean isClass(Object obj, Class<T> clazz)
+	{
+		try
+		{
+			clazz.cast(obj);
+			return true;
+		}
+		catch (Throwable e)
+		{
+			return false;
+		}
+	}
+	
 	/**
 	 * Converts a List type to an FSList holding the same data
 	 * 
@@ -106,16 +119,21 @@ public class TypeUtils {
 			TOP el = (TOP) ((NonEmptyFSList) list).getHead();
 			try
 			{
-				//See if the element checks out okay
-				for(CheckMethod checkMethod : checkMethods)
+				Object obj = type.cast(el);
+				if( checkMethods != null)
 				{
-					if(((Integer) checkMethod.invoke(type.cast(el)))!=0)
+					//See if the element checks out okay
+					for(CheckMethod checkMethod : checkMethods)
 					{
-						//System.out.println("          Head did not meet check requirements.");
-						continue;
+						if(((Integer) checkMethod.invoke(obj))!=0)
+						{
+							//System.out.println("          Head did not meet check requirements.");
+							continue;
+						}
 					}
 				}
 				results.add(el);
+				System.out.println(type);
 			}
 			catch(Throwable e)
 			{
@@ -127,4 +145,6 @@ public class TypeUtils {
 		}
 		return results;
 	}
+	
+	
 }

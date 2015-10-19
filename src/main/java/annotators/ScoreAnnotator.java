@@ -26,23 +26,19 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.EmptyFSList;
-import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.FSList;
 import org.apache.uima.jcas.cas.NonEmptyFSList;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import rank.CompositeRanker;
 import rank.IRanker;
 import rank.NgramRanker;
 import rank.OtherRanker;
 import rank.WeightedAverageCompositeRanker;
-import type.Ngram;
-import type.NgramAnnotation;
-import type.NgramSet;
+import type.Passage;
+import type.Question;
 import type.ScoredSpan;
 import type.Scoring;
-import type.Span;
 import type.TestElementAnnotation;
 import type.Score;
 
@@ -94,50 +90,45 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 		
 		// Initialize rankers
 		compositeRanker = new WeightedAverageCompositeRanker(jcas);
-		ngramRanker = new NgramRanker();
-		otherRanker = new OtherRanker();
+		ngramRanker = new NgramRanker(jcas);
+		otherRanker = new OtherRanker(jcas);
 		compositeRanker.addWeightedRanker(ngramRanker,(float) 1);
 		compositeRanker.addWeightedRanker(otherRanker,(float) 1);
 		
 		// Get the Ngram Annotations for each Test Element in the document
-		FSIndex<NgramAnnotation> ngramIndex = (FSIndex) jcas.getAnnotationIndex(NgramAnnotation.type);
+		FSIndex<TestElementAnnotation> fs = (FSIndex) jcas.getAnnotationIndex(TestElementAnnotation.type);
 
 		// Iterate over them in sequence
-		for(NgramAnnotation ngramAnnot : ngramIndex)
+		for(TestElementAnnotation te : fs)
 		{			
 			//////////////////////
 			// Handle the question
-			// Get the ngrams for this Test Element's question
-			NgramSet questionNgrams = ngramAnnot.getQuestionNgrams();
-
+			Question question = te.getQuestion();
+			
 			//////////////////////
 			// Handle the answers
 			// Create a list to hold our scoring for each answer choice
 			Scoring output = new Scoring(jcas);
 			output.setComponentId(this.getClass().getName());
-			output.setBegin(Math.min(questionNgrams.getBegin(), getMinBegin(ngramAnnot.getPassageNgrams())));
-			output.setEnd(Math.max(questionNgrams.getEnd(), getMaxEnd(ngramAnnot.getPassageNgrams())));
+			output.setBegin(Math.min(question.getBegin(), getMinBegin(question.getPassages())));
+			output.setEnd(Math.max(question.getEnd(), getMaxEnd(question.getPassages())));
 			
 			/////////////////////
 			// Score each passage
-			FSList passages = ngramAnnot.getPassageNgrams();
+			FSList passages = question.getPassages();
 			FSList scores = new EmptyFSList(jcas);
 			while(!(passages instanceof EmptyFSList))
 			{
-				NgramSet passageNgrams = (NgramSet) ((NonEmptyFSList) passages).getHead();
+				Passage passage = (Passage) ((NonEmptyFSList) passages).getHead();
 				NonEmptyFSList next = new NonEmptyFSList(jcas);
 				ScoredSpan span = new ScoredSpan(jcas);
-				span.setBegin(passageNgrams.getBegin());
-				span.setEnd(passageNgrams.getEnd());
-				span.setText(passageNgrams.getText());
-				span.setOrig(passageNgrams.getOrig());
+				span.setBegin(passage.getBegin());
+				span.setEnd(passage.getEnd());
+				span.setText(passage.getText());
+				span.setOrig(passage);
 				span.setComponentId(this.getClass().getName());
 				
-				//Make the score
-				Score score = new Score(jcas);
-				score.setScore(this.score(questionNgrams,passageNgrams));
-				score.setComponentId(this.getClass().getName());
-				score.addToIndexes();
+				Score score = compositeRanker.score(question, passage);
 				
 				span.setScore(score);
 				span.addToIndexes();
@@ -147,12 +138,12 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 				passages = ((NonEmptyFSList) passages).getTail();
 			}
 			output.setScores(scores);
-			output.setBegin(ngramAnnot.getBegin());
-			output.setEnd(ngramAnnot.getEnd());
-			output.setOrig(ngramAnnot.getOrig());
+			output.setBegin(te.getBegin());
+			output.setEnd(te.getEnd());
+			output.setOrig(te);
 			output.setComponentId(this.getClass().getName());	
 			output.addToIndexes();
-			System.out.println("    Scored document " +  ((TestElementAnnotation) ngramAnnot.getOrig()).getQuestion().getId() + ".");
+			System.out.println("    Scored document " +  question.getId() + ".");
 		}
 	}
 
@@ -188,46 +179,5 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 			arr = ((NonEmptyFSList) arr).getTail();
 		}
 		return max;
-	}
-	
-	/**
-	 * Scores the agreement between the two NgramSet params based on ngram overlap 
-	 * 
-	 * @return
-	 */
-	private Double score(NgramSet tokens1, NgramSet tokens2)
-	{	
-		return (double) tokenOverlap(tokens1.getNgrams(), tokens2.getNgrams());
-	}
-	
-	private float tokenOverlap(FSArray tokens1, FSArray tokens2)
-	{
-		if(tokens1 == null || tokens2 == null)
-			return 0;
-		
-		float count = 0;
-		for(int i = 0; i < tokens1.size(); i++)
-		{
-			for(int j = 0; j < tokens2.size(); j++)
-			{
-				if(tokens1.get(i) != null && tokens2.get(j) != null
-						&& sameNgram((Ngram) tokens1.get(i), (Ngram) tokens2.get(j)))
-					count++;
-			}
-		}
-		return count/(tokens1.size()*tokens2.size());
-	}
-	
-	private boolean sameNgram(Ngram ngram1, Ngram ngram2)
-	{
-		if(ngram1.getN() != ngram2.getN())
-			return false;
-		for(int i = 0; i < ngram1.getN(); i++)
-		{
-			if(!((Span) ngram1.getTokens().get(i)).getText().equals(
-			    ((Span) ngram2.getTokens().get(i)).getText()))
-				return false;
-		}
-		return true;
 	}
 }

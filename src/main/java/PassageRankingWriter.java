@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
-import org.apache.uima.cas.FSIterator;
 import org.apache.uima.collection.CasConsumer_ImplBase;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.jcas.JCas;
@@ -15,10 +14,6 @@ import org.apache.uima.resource.ResourceProcessException;
 
 import rank.CompositeRanker;
 import rank.IRanker;
-import rank.NgramRanker;
-import rank.OtherRanker;
-import type.ErrorAnalysisAnnotation;
-import type.OutputAnnotation;
 import type.Passage;
 import type.Question;
 import util.RandomUtils;
@@ -96,8 +91,8 @@ public void processCas(CAS arg0) throws ResourceProcessException {
         double recall = 0.0;
         double f1 = 0.0;
 
-        //writer.printf("%s,%d,%d,%d,%.3f,%.3f,%.3f\n", question.getId(), m.getTp(), m.getFn(),
-        //        m.getFp(), precision, recall, f1);
+        writer.printf("%s,%d,%d,%d,%.3f,%.3f,%.3f\n", question.getId(), m.getTp(), m.getFn(),
+                m.getFp(), precision, recall, f1);
       }
     } catch (CASException e) {
       try {

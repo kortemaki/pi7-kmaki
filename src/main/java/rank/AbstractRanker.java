@@ -18,7 +18,9 @@ public abstract class AbstractRanker implements IRanker {
   
   /**
    * Sorts the given list of passages associated with the given question, and returns a ranked list
-   * of passages. A subclass needs to implement this method.
+   * of passages. The scoringAPI of the given AbstractRanker instance must provide the appropriate scoring method.
+   * 
+   * This method is currently defunct, but is not used in any code. 
    * 
    * @param question
    * @param passages
@@ -34,7 +36,7 @@ public abstract class AbstractRanker implements IRanker {
 
   /**
    * Returns a score of the given passage associated with the given question.
-   * The scoringAPI of the given Abstract ranker must provide the appropriate scoring method.
+   * The scoringAPI of the given AbstractRanker instance must provide the appropriate scoring method.
    * 
    * @param question
    * @param passage

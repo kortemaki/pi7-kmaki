@@ -26,6 +26,9 @@ public class AnalysisUtils {
 	/* The rank at which to compute PRF statistics and confusion matrix */
 	private static final int CUTOFF = 5;
 	
+	/**
+	 * Check methods for metrics
+	 */
 	public static Method getName = TypeUtils.instantiateMethod(PAtN.class, "getMetricName");
 	public static Method getN = TypeUtils.instantiateMethod(PAtN.class, "getN");
 	
