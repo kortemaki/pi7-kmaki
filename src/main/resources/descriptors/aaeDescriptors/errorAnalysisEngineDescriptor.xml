@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
+  <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
+  <primitive>false</primitive>  
+  <delegateAnalysisEngineSpecifiers>
+    <delegateAnalysisEngine key="ErrorAnalysisAnnotator">
+      <import name="descriptors.annotatorDescriptors.ErrorAnalysisAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="ErrorAnalysisOutputAnnotator">
+      <import name="descriptors.annotatorDescriptors.ErrorAnalysisOutputAnnotator"/>
+    </delegateAnalysisEngine>
+  </delegateAnalysisEngineSpecifiers>
+  <analysisEngineMetaData>
+    <name>ErrorAnalysisEngineDescriptor</name>
+    <description>Analysis engine for pi6-kmaki.  Handles the computation of error statistics for each test element such as precision, recall, and f-measure.</description>
+    <version>1.0</version>
+    <vendor/>
+    <configurationParameters/>
+    <configurationParameterSettings/>
+    <flowConstraints>
+      <fixedFlow>
+        <node>ErrorAnalysisAnnotator</node>
+        <node>ErrorAnalysisOutputAnnotator</node>
+      </fixedFlow>
+    </flowConstraints>
+    <typePriorities/>
+    <fsIndexCollection/>
+    <capabilities>
+      <capability>
+        <inputs/>
+        <outputs/>
+        <languagesSupported/>
+      </capability>
+    </capabilities>
+  <operationalProperties>
+      <modifiesCas>true</modifiesCas>
+      <multipleDeploymentAllowed>true</multipleDeploymentAllowed>
+      <outputsNewCASes>false</outputsNewCASes>
+    </operationalProperties>
+  </analysisEngineMetaData>
+  <resourceManagerConfiguration/>
+</analysisEngineDescription>
