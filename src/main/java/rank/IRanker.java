@@ -1,7 +1,7 @@
 package rank;
 
 import java.util.List;
-
+import type.Score;
 import type.Passage;
 import type.Question;
 
@@ -23,6 +23,6 @@ public interface IRanker {
    * @param passage
    * @return a score of the passage
    */
-  public Double score(Question question, Passage passage);
-
+  public Score score(Question question, Passage passage);
+  
 }

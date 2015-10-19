@@ -36,6 +36,7 @@ import rank.CompositeRanker;
 import rank.IRanker;
 import rank.NgramRanker;
 import rank.OtherRanker;
+import rank.WeightedAverageCompositeRanker;
 import type.Ngram;
 import type.NgramAnnotation;
 import type.NgramSet;
@@ -43,6 +44,7 @@ import type.ScoredSpan;
 import type.Scoring;
 import type.Span;
 import type.TestElementAnnotation;
+import type.Score;
 
 /**
  * A simple scoring annotator for PI3.
@@ -56,7 +58,7 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 
 	IRanker ngramRanker, otherRanker;
 
-	CompositeRanker compositeRanker;
+	WeightedAverageCompositeRanker compositeRanker;
 	/**
 	 * Initialization method for the pi7-kmaki ScoreAnnotator class.
 	 * Instantiates a composite ranker with NgramRanker and OtherRanker rankers
@@ -74,13 +76,8 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 			args[0] = this.n;
 			throw new ResourceInitializationException("Cannot instantiate Ngram Annotator with given n",args);
 		}*/
-		// Initialize rankers
-		compositeRanker = new CompositeRanker();
-		ngramRanker = new NgramRanker();
-		otherRanker = new OtherRanker();
-		compositeRanker.addRanker(ngramRanker);
-		compositeRanker.addRanker(otherRanker);
 		
+		//make builders for the rankers?
     }
 	
 	
@@ -92,6 +89,15 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 		} catch (CASException e) {
 			throw new AnalysisEngineProcessException(e);
 		}
+		
+		//TODO: give the ranker builder the jcas
+		
+		// Initialize rankers
+		compositeRanker = new WeightedAverageCompositeRanker(jcas);
+		ngramRanker = new NgramRanker();
+		otherRanker = new OtherRanker();
+		compositeRanker.addWeightedRanker(ngramRanker,(float) 1);
+		compositeRanker.addWeightedRanker(otherRanker,(float) 1);
 		
 		// Get the Ngram Annotations for each Test Element in the document
 		FSIndex<NgramAnnotation> ngramIndex = (FSIndex) jcas.getAnnotationIndex(NgramAnnotation.type);
@@ -120,16 +126,22 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 			{
 				NgramSet passageNgrams = (NgramSet) ((NonEmptyFSList) passages).getHead();
 				NonEmptyFSList next = new NonEmptyFSList(jcas);
-				ScoredSpan score = new ScoredSpan(jcas);
-				score.setBegin(passageNgrams.getBegin());
-				score.setEnd(passageNgrams.getEnd());
-				score.setText(passageNgrams.getText());
-				score.setOrig(passageNgrams.getOrig());
-				score.setComponentId(this.getClass().getName());
+				ScoredSpan span = new ScoredSpan(jcas);
+				span.setBegin(passageNgrams.getBegin());
+				span.setEnd(passageNgrams.getEnd());
+				span.setText(passageNgrams.getText());
+				span.setOrig(passageNgrams.getOrig());
+				span.setComponentId(this.getClass().getName());
 				
+				//Make the score
+				Score score = new Score(jcas);
 				score.setScore(this.score(questionNgrams,passageNgrams));
+				score.setComponentId(this.getClass().getName());
 				score.addToIndexes();
-				next.setHead(score);
+				
+				span.setScore(score);
+				span.addToIndexes();
+				next.setHead(span);
 				next.setTail(scores);
 				scores = next;
 				passages = ((NonEmptyFSList) passages).getTail();

@@ -11,7 +11,7 @@ import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
 /** Report Annotation summarizing the performance of the system on a single test element.
- * Updated by JCasGen Mon Oct 12 20:48:05 EDT 2015
+ * Updated by JCasGen Mon Oct 19 14:30:37 EDT 2015
  * @generated */
 public class PerformanceAnnotation_Type extends ReportAnnotation_Type {
   /** @generated 

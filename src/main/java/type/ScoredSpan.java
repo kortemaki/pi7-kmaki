@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** A span with a score
- * Updated by JCasGen Mon Oct 12 20:48:05 EDT 2015
- * XML source: /media/maki/OS/Users/Keith/Documents/CMU/Coursework/11791/PI6/pi6-kmaki/src/main/resources/descriptors/typeSystem.xml
+ * Updated by JCasGen Mon Oct 19 14:30:37 EDT 2015
+ * XML source: /media/maki/OS/Users/Keith/Documents/CMU/Coursework/11791/PI7/pi7-kmaki/src/main/resources/descriptors/typeSystem.xml
  * @generated */
 public class ScoredSpan extends SpanModification {
   /** @generated
@@ -82,19 +82,19 @@ public class ScoredSpan extends SpanModification {
    * @generated
    * @return value of the feature 
    */
-  public double getScore() {
+  public Score getScore() {
     if (ScoredSpan_Type.featOkTst && ((ScoredSpan_Type)jcasType).casFeat_score == null)
       jcasType.jcas.throwFeatMissing("score", "type.ScoredSpan");
-    return jcasType.ll_cas.ll_getDoubleValue(addr, ((ScoredSpan_Type)jcasType).casFeatCode_score);}
+    return (Score)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((ScoredSpan_Type)jcasType).casFeatCode_score)));}
     
   /** setter for score - sets The score for this annotation 
    * @generated
    * @param v value to set into the feature 
    */
-  public void setScore(double v) {
+  public void setScore(Score v) {
     if (ScoredSpan_Type.featOkTst && ((ScoredSpan_Type)jcasType).casFeat_score == null)
       jcasType.jcas.throwFeatMissing("score", "type.ScoredSpan");
-    jcasType.ll_cas.ll_setDoubleValue(addr, ((ScoredSpan_Type)jcasType).casFeatCode_score, v);}    
+    jcasType.ll_cas.ll_setRefValue(addr, ((ScoredSpan_Type)jcasType).casFeatCode_score, jcasType.ll_cas.ll_getFSRef(v));}    
   }
 
     

@@ -3,6 +3,9 @@ package rank;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.uima.jcas.JCas;
+
+import type.Score;
 import type.Passage;
 import type.Question;
 
@@ -10,7 +13,9 @@ import type.Question;
  * This class provides a skeletal implementation of interface IRanker.
  */
 public abstract class AbstractRanker implements IRanker {
-
+  JCas jcas;
+  protected ScoringAPI scoringAPI;
+  
   /**
    * Sorts the given list of passages associated with the given question, and returns a ranked list
    * of passages. A subclass needs to implement this method.
@@ -28,14 +33,16 @@ public abstract class AbstractRanker implements IRanker {
   }
 
   /**
-   * Returns a score of the given passage associated with the given question. A subclass needs to
-   * implement this method.  A subclass needs to implement this method.
+   * Returns a score of the given passage associated with the given question.
+   * The scoringAPI of the given Abstract ranker must provide the appropriate scoring method.
    * 
    * @param question
    * @param passage
    * @return
    */
-  public abstract Double score(Question question, Passage passage);
+  public Score score(Question question, Passage passage) {
+	return this.scoringAPI.score(this.jcas, this, question,passage);
+  }
 
   /**
    * Returns a String describing this ranker

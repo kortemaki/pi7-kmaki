@@ -70,7 +70,7 @@
         <featureDescription>
           <name>score</name>
           <description>The score for this annotation</description>
-          <rangeTypeName>uima.cas.Double</rangeTypeName>
+          <rangeTypeName>type.Score</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
@@ -292,6 +292,18 @@
       <name>type.ErrorAnalysisAnnotation</name>
       <description>ReportAnnotation summarizing the system's performance on a test element with respect to error analysis.</description>
       <supertypeName>type.ReportAnnotation</supertypeName>
+    </typeDescription>
+  <typeDescription>
+      <name>type.Score</name>
+      <description>A double value that remembers the name of the component which annotated it.</description>
+      <supertypeName>type.ComponentAnnotation</supertypeName>
+      <features>
+        <featureDescription>
+          <name>score</name>
+          <description>The value annotated by this annotation.</description>
+          <rangeTypeName>uima.cas.Double</rangeTypeName>
+        </featureDescription>
+      </features>
     </typeDescription>
   </types>
 </typeSystemDescription>

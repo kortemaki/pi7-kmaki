@@ -1,5 +1,5 @@
 
-/* First created by JCasGen Mon Oct 05 10:08:06 EDT 2015 */
+/* First created by JCasGen Mon Oct 19 14:30:37 EDT 2015 */
 package type;
 
 import org.apache.uima.jcas.JCas;
@@ -12,10 +12,10 @@ import org.apache.uima.cas.Type;
 import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
-/** A span with a score
+/** A double value that remembers the name of the component which annotated it.
  * Updated by JCasGen Mon Oct 19 14:30:37 EDT 2015
  * @generated */
-public class ScoredSpan_Type extends SpanModification_Type {
+public class Score_Type extends ComponentAnnotation_Type {
   /** @generated 
    * @return the generator for this type
    */
@@ -25,25 +25,25 @@ public class ScoredSpan_Type extends SpanModification_Type {
   private final FSGenerator fsGenerator = 
     new FSGenerator() {
       public FeatureStructure createFS(int addr, CASImpl cas) {
-  			 if (ScoredSpan_Type.this.useExistingInstance) {
+  			 if (Score_Type.this.useExistingInstance) {
   			   // Return eq fs instance if already created
-  		     FeatureStructure fs = ScoredSpan_Type.this.jcas.getJfsFromCaddr(addr);
+  		     FeatureStructure fs = Score_Type.this.jcas.getJfsFromCaddr(addr);
   		     if (null == fs) {
-  		       fs = new ScoredSpan(addr, ScoredSpan_Type.this);
-  			   ScoredSpan_Type.this.jcas.putJfsFromCaddr(addr, fs);
+  		       fs = new Score(addr, Score_Type.this);
+  			   Score_Type.this.jcas.putJfsFromCaddr(addr, fs);
   			   return fs;
   		     }
   		     return fs;
-        } else return new ScoredSpan(addr, ScoredSpan_Type.this);
+        } else return new Score(addr, Score_Type.this);
   	  }
     };
   /** @generated */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = ScoredSpan.typeIndexID;
+  public final static int typeIndexID = Score.typeIndexID;
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("type.ScoredSpan");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("type.Score");
  
   /** @generated */
   final Feature casFeat_score;
@@ -53,19 +53,19 @@ public class ScoredSpan_Type extends SpanModification_Type {
    * @param addr low level Feature Structure reference
    * @return the feature value 
    */ 
-  public int getScore(int addr) {
+  public double getScore(int addr) {
         if (featOkTst && casFeat_score == null)
-      jcas.throwFeatMissing("score", "type.ScoredSpan");
-    return ll_cas.ll_getRefValue(addr, casFeatCode_score);
+      jcas.throwFeatMissing("score", "type.Score");
+    return ll_cas.ll_getDoubleValue(addr, casFeatCode_score);
   }
   /** @generated
    * @param addr low level Feature Structure reference
    * @param v value to set 
    */    
-  public void setScore(int addr, int v) {
+  public void setScore(int addr, double v) {
         if (featOkTst && casFeat_score == null)
-      jcas.throwFeatMissing("score", "type.ScoredSpan");
-    ll_cas.ll_setRefValue(addr, casFeatCode_score, v);}
+      jcas.throwFeatMissing("score", "type.Score");
+    ll_cas.ll_setDoubleValue(addr, casFeatCode_score, v);}
     
   
 
@@ -76,12 +76,12 @@ public class ScoredSpan_Type extends SpanModification_Type {
 	 * @param jcas JCas
 	 * @param casType Type 
 	 */
-  public ScoredSpan_Type(JCas jcas, Type casType) {
+  public Score_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
 
  
-    casFeat_score = jcas.getRequiredFeatureDE(casType, "score", "type.Score", featOkTst);
+    casFeat_score = jcas.getRequiredFeatureDE(casType, "score", "uima.cas.Double", featOkTst);
     casFeatCode_score  = (null == casFeat_score) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_score).getCode();
 
   }

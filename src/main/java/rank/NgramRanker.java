@@ -2,6 +2,7 @@ package rank;
 
 import type.Passage;
 import type.Question;
+import type.Score;
 
 public class NgramRanker extends AbstractRanker {
 
@@ -13,7 +14,7 @@ public class NgramRanker extends AbstractRanker {
    * @return a score of the passage
    */
   @Override
-  public Double score(Question question, Passage passage) {
+  public Score score(Question question, Passage passage) {
     // TODO Complete the implementation of this method.
 
     return null;

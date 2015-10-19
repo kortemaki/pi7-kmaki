@@ -95,7 +95,7 @@ public class AnalysisUtils {
 		{
 			ScoredSpan passage = (ScoredSpan) ((NonEmptyFSList) nextScore).getHead();
 			boolean label = ((Passage) passage.getOrig()).getLabel();
-			double score = passage.getScore();
+			double score = passage.getScore().getScore();
 			labels.add(label);
 			scores.add(score);
 			nextScore = ((NonEmptyFSList) nextScore).getTail();
