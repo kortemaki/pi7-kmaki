@@ -86,6 +86,7 @@ public class TestElementAnnotator extends CasAnnotator_ImplBase
 		q.setBegin(qnum.length() + QUESTION_MARKER.length() + 2);
 		q.setEnd(index);
 		q.setText(question.substring(q.getBegin()));
+		q.setAnalysisAnnotations(new EmptyFSList(jcas));
 		q.setComponentId(this.getClass().getName());
 		
 		///////////////////////
@@ -111,6 +112,7 @@ public class TestElementAnnotator extends CasAnnotator_ImplBase
 			passageSpan.setComponentId(this.getClass().getName());
 			passageSpan.addToIndexes();
 			tePassage.setPassage(passageSpan);
+			tePassage.setAnalysisAnnotations(new EmptyFSList(jcas));
 			tePassage.setSourceDocId(sourceDocID);
 			try
 			{

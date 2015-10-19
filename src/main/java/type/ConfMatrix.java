@@ -10,7 +10,7 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** The information about the confusion matrix for the given test element.
- * Updated by JCasGen Mon Oct 19 14:30:36 EDT 2015
+ * Updated by JCasGen Mon Oct 19 15:25:59 EDT 2015
  * XML source: /media/maki/OS/Users/Keith/Documents/CMU/Coursework/11791/PI7/pi7-kmaki/src/main/resources/descriptors/typeSystem.xml
  * @generated */
 public class ConfMatrix extends Metric {

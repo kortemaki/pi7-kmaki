@@ -9,8 +9,11 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 
+import org.apache.uima.jcas.cas.FSList;
+
+
 /** Stores the information of the passage.
- * Updated by JCasGen Mon Oct 19 14:30:37 EDT 2015
+ * Updated by JCasGen Mon Oct 19 15:25:59 EDT 2015
  * XML source: /media/maki/OS/Users/Keith/Documents/CMU/Coursework/11791/PI7/pi7-kmaki/src/main/resources/descriptors/typeSystem.xml
  * @generated */
 public class Passage extends Span {
@@ -161,6 +164,28 @@ public class Passage extends Span {
     if (Passage_Type.featOkTst && ((Passage_Type)jcasType).casFeat_question == null)
       jcasType.jcas.throwFeatMissing("question", "type.Passage");
     jcasType.ll_cas.ll_setRefValue(addr, ((Passage_Type)jcasType).casFeatCode_question, jcasType.ll_cas.ll_getFSRef(v));}    
+   
+    
+  //*--------------*
+  //* Feature: analysisAnnotations
+
+  /** getter for analysisAnnotations - gets The annotations associated with this passage.
+   * @generated
+   * @return value of the feature 
+   */
+  public FSList getAnalysisAnnotations() {
+    if (Passage_Type.featOkTst && ((Passage_Type)jcasType).casFeat_analysisAnnotations == null)
+      jcasType.jcas.throwFeatMissing("analysisAnnotations", "type.Passage");
+    return (FSList)(jcasType.ll_cas.ll_getFSForRef(jcasType.ll_cas.ll_getRefValue(addr, ((Passage_Type)jcasType).casFeatCode_analysisAnnotations)));}
+    
+  /** setter for analysisAnnotations - sets The annotations associated with this passage. 
+   * @generated
+   * @param v value to set into the feature 
+   */
+  public void setAnalysisAnnotations(FSList v) {
+    if (Passage_Type.featOkTst && ((Passage_Type)jcasType).casFeat_analysisAnnotations == null)
+      jcasType.jcas.throwFeatMissing("analysisAnnotations", "type.Passage");
+    jcasType.ll_cas.ll_setRefValue(addr, ((Passage_Type)jcasType).casFeatCode_analysisAnnotations, jcasType.ll_cas.ll_getFSRef(v));}    
   }
 
     

@@ -13,7 +13,7 @@ import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
 /** Stores the information of the passage.
- * Updated by JCasGen Mon Oct 19 14:30:37 EDT 2015
+ * Updated by JCasGen Mon Oct 19 15:25:59 EDT 2015
  * @generated */
 public class Passage_Type extends Span_Type {
   /** @generated 
@@ -140,6 +140,30 @@ public class Passage_Type extends Span_Type {
     ll_cas.ll_setRefValue(addr, casFeatCode_question, v);}
     
   
+ 
+  /** @generated */
+  final Feature casFeat_analysisAnnotations;
+  /** @generated */
+  final int     casFeatCode_analysisAnnotations;
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @return the feature value 
+   */ 
+  public int getAnalysisAnnotations(int addr) {
+        if (featOkTst && casFeat_analysisAnnotations == null)
+      jcas.throwFeatMissing("analysisAnnotations", "type.Passage");
+    return ll_cas.ll_getRefValue(addr, casFeatCode_analysisAnnotations);
+  }
+  /** @generated
+   * @param addr low level Feature Structure reference
+   * @param v value to set 
+   */    
+  public void setAnalysisAnnotations(int addr, int v) {
+        if (featOkTst && casFeat_analysisAnnotations == null)
+      jcas.throwFeatMissing("analysisAnnotations", "type.Passage");
+    ll_cas.ll_setRefValue(addr, casFeatCode_analysisAnnotations, v);}
+    
+  
 
 
 
@@ -167,6 +191,10 @@ public class Passage_Type extends Span_Type {
  
     casFeat_question = jcas.getRequiredFeatureDE(casType, "question", "type.Question", featOkTst);
     casFeatCode_question  = (null == casFeat_question) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_question).getCode();
+
+ 
+    casFeat_analysisAnnotations = jcas.getRequiredFeatureDE(casType, "analysisAnnotations", "uima.cas.FSList", featOkTst);
+    casFeatCode_analysisAnnotations  = (null == casFeat_analysisAnnotations) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_analysisAnnotations).getCode();
 
   }
 }

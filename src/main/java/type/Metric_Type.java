@@ -13,7 +13,7 @@ import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
 /** Annotation indicating the performance of the system on some test element under a certain metric.
- * Updated by JCasGen Mon Oct 19 14:30:36 EDT 2015
+ * Updated by JCasGen Mon Oct 19 15:25:59 EDT 2015
  * @generated */
 public class Metric_Type extends ComponentAnnotation_Type {
   /** @generated 

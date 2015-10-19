@@ -11,7 +11,7 @@ import org.apache.uima.cas.impl.TypeImpl;
 import org.apache.uima.cas.Type;
 
 /** ReportAnnotation summarizing the system's performance on a test element with respect to error analysis.
- * Updated by JCasGen Mon Oct 19 14:30:36 EDT 2015
+ * Updated by JCasGen Mon Oct 19 15:25:59 EDT 2015
  * @generated */
 public class ErrorAnalysisAnnotation_Type extends ReportAnnotation_Type {
   /** @generated 

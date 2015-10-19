@@ -1,4 +1,5 @@
 import org.apache.uima.UIMAFramework;
+import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.collection.CollectionProcessingEngine;
 import org.apache.uima.collection.metadata.CpeDescription;
 import org.apache.uima.resource.ConfigurableResource;
@@ -40,9 +41,10 @@ public class Main {
 
     //TODO: Figure this out?
     // Configure your aggregate analysis engine here, if you want to.
-    ConfigurableResource aae = (ConfigurableResource) mCPE.getCasProcessors()[0];
-    aae.setConfigParameterValue("NGram1", 1);
-    aae.setConfigParameterValue("NGram2", 1);
+    ConfigurableResource aecr = (ConfigurableResource) mCPE.getCasProcessors()[0];
+    AnalysisEngine aae = (AnalysisEngine) aecr;
+    aae.setConfigParameterValue("NGramWidth1", 1);
+    aae.setConfigParameterValue("NGramWidth2", 2);
     
     // Configure your CAS consumer with the given output directory. The code below assumes that the
     // CAS consumer has a parameter 'OutputDir' to specify the output directory. The code below

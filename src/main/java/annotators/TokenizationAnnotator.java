@@ -18,6 +18,7 @@
  */
 package annotators;
 import java.util.LinkedList;
+
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -38,6 +39,8 @@ import type.Span;
 import type.TestElementAnnotation;
 import type.TokenAnnotation;
 import type.TokenizedSpan;
+
+import util.TypeUtils;
 
 /**
  * A simple tokenization annotator for PI3
@@ -75,6 +78,8 @@ public class TokenizationAnnotator extends CasAnnotator_ImplBase {
 				Passage passage = (Passage) ((NonEmptyFSList) passages).getHead();
 				NonEmptyFSList next = new NonEmptyFSList(jcas);
 				TokenizedSpan tokenization = this.tokenize(passage,jcas);
+				passage.setAnalysisAnnotations(
+						TypeUtils.addToFSList(passage.getAnalysisAnnotations(), tokenization, jcas));
 				next.setHead(tokenization);
 				next.setTail(passtoks);
 				passtoks = next;
@@ -84,6 +89,8 @@ public class TokenizationAnnotator extends CasAnnotator_ImplBase {
 			annot.setBegin(te.getBegin());
 			annot.setEnd(te.getEnd());
 			annot.setOrig(te);
+			question.setAnalysisAnnotations(
+					TypeUtils.addToFSList(question.getAnalysisAnnotations(),annot,jcas));
 			annot.setComponentId(this.getClass().getName());
 			annot.addToIndexes();
 			System.out.println("    Tokenized document " + question.getId() + ".");

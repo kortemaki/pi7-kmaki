@@ -34,10 +34,13 @@ import org.apache.uima.resource.ResourceInitializationException;
 import type.Ngram;
 import type.NgramAnnotation;
 import type.NgramSet;
+import type.Passage;
+import type.Question;
 import type.Span;
 import type.TestElementAnnotation;
 import type.TokenAnnotation;
 import type.TokenizedSpan;
+import util.TypeUtils;
 
 /**
  * A simple ngram annotator for PI3.
@@ -93,7 +96,10 @@ public class NgramAnnotator extends CasAnnotator_ImplBase {
 				TokenizedSpan passage = (TokenizedSpan) ((NonEmptyFSList) passages).getHead();
 				NonEmptyFSList next = new NonEmptyFSList(jcas);
 				NgramSet ngrams = this.ngramize(passage,jcas);
-				ngrams.setOrig(passage.getOrig());
+				Passage orig = (Passage) passage.getOrig();
+				orig.setAnalysisAnnotations(
+						TypeUtils.addToFSList(orig.getAnalysisAnnotations(), ngrams, jcas));
+				ngrams.setOrig(orig);
 				next.setHead(ngrams);
 				next.setTail(passagesNgrams);				
 				passagesNgrams = next;
@@ -102,7 +108,11 @@ public class NgramAnnotator extends CasAnnotator_ImplBase {
 			annot.setPassageNgrams(passagesNgrams);
 			annot.setBegin(te.getBegin());
 			annot.setEnd(te.getEnd());
-			annot.setOrig(te.getOrig());
+			Question orig = (Question) te.getOrig();
+			annot.setOrig(orig);
+			orig.setAnalysisAnnotations(
+					TypeUtils.addToFSList(orig.getAnalysisAnnotations(),annot,jcas));
+			
 			annot.setComponentId(NAME);
 			annot.addToIndexes();
 			System.out.println("    Annotated ngrams in document " + ((TestElementAnnotation) te.getOrig()).getQuestion().getId() + ".");
