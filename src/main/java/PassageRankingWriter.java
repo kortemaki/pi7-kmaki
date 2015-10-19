@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -12,7 +13,20 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
 
+import rank.CompositeRanker;
+import rank.IRanker;
+import rank.NgramRanker;
+import rank.OtherRanker;
+import type.ErrorAnalysisAnnotation;
 import type.OutputAnnotation;
+import type.Passage;
+import type.Question;
+import util.RandomUtils;
+import util.UimaUtils;
+
+/**
+ * TODO: Move most of this code to ScoreAnnotator, ErrorAnalysisAnnotator, OutputAnnotator, etc.
+ */
 
 /**
  * This CAS Consumer generates the report file with the method metrics
@@ -24,6 +38,9 @@ public class PassageRankingWriter extends CasConsumer_ImplBase {
   File outputFile;
   PrintWriter writer;
   
+  IRanker ngramRanker, otherRanker;
+
+  CompositeRanker compositeRanker;
   
   @Override
   public void initialize() throws ResourceInitializationException {
@@ -35,18 +52,18 @@ public class PassageRankingWriter extends CasConsumer_ImplBase {
       }
       
       try {
-          outputFile = new File(Paths.get(mOutputDir.getAbsolutePath(), 
-                                    OUTPUT_FILENAME).toString());
-          outputFile.getParentFile().mkdirs();
-          writer = new PrintWriter(outputFile);
-        } catch (FileNotFoundException e) {
-          System.out.printf("Output file could not be written: %s\n", 
-                  Paths.get(mOutputDir.getAbsolutePath(), 
-                            OUTPUT_FILENAME).toString());
-          return;
-        }
+        outputFile = new File(Paths.get(mOutputDir.getAbsolutePath(), 
+                                  OUTPUT_FILENAME).toString());
+        outputFile.getParentFile().mkdirs();
+        writer = new PrintWriter(outputFile);
+      } catch (FileNotFoundException e) {
+        System.out.printf("Output file could not be written: %s\n", 
+                Paths.get(mOutputDir.getAbsolutePath(), 
+                          OUTPUT_FILENAME).toString());
+        return;
+      }
         
-        writer.println("question_id,p_at_1,p_at_5,rr,ap");
+      writer.println("question_id,tp,fn,fp,precision,recall,f1");
       
     }
   }
@@ -57,18 +74,31 @@ public void processCas(CAS arg0) throws ResourceProcessException {
     JCas jcas = null;
     try {
       jcas = arg0.getJCas();
+      
+	  // Retrieve all the questions for printout
+      List<Question> allQuestions = UimaUtils.getAnnotations(jcas, Question.class);
+      List<Question> subsetOfQuestions = RandomUtils.getRandomSubset(allQuestions, 10);
 
-      // Retrieve all the questions for printout
-      //TODO: Sort the question in ascending order according to their ID (???)
-      FSIterator it = jcas.getAnnotationIndex(OutputAnnotation.type).iterator();
-      
-      while (it.hasNext()) {
-        OutputAnnotation output = (OutputAnnotation)it.next();
-        
-        writer.println(output.getOutput());
-        
+      // TODO: Here one needs to sort the questions in ascending order of their question ID
+
+      for (Question question : subsetOfQuestions) {
+        List<Passage> passages = UimaUtils.convertFSListToList(question.getPassages(), Passage.class);
+
+        // TODO: Use the following three lists of ranked passages for your error analysis
+        List<Passage> ngramRankedPassages = ngramRanker.rank(question, passages);
+        List<Passage> otherRankedPassages = otherRanker.rank(question, passages);
+        List<Passage> compositeRankedPassages = compositeRanker.rank(question, passages);
+
+        //ErrorAnalysisAnnotation m = question.getMeasurement();
+
+        // TODO: Calculate actual precision, recall and F1
+        double precision = 0.0;
+        double recall = 0.0;
+        double f1 = 0.0;
+
+        //writer.printf("%s,%d,%d,%d,%.3f,%.3f,%.3f\n", question.getId(), m.getTp(), m.getFn(),
+        //        m.getFp(), precision, recall, f1);
       }
-      
     } catch (CASException e) {
       try {
         throw new CollectionException(e);
@@ -80,8 +110,8 @@ public void processCas(CAS arg0) throws ResourceProcessException {
   
   public void destroy()
   {
-	  if(this.writer != null)
-	      writer.close();
+    if(this.writer != null) 
+      writer.close();
   }
   
 }

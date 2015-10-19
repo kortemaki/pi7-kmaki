@@ -18,6 +18,7 @@
  */
 package annotators;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.CasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
@@ -29,7 +30,12 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.FSList;
 import org.apache.uima.jcas.cas.NonEmptyFSList;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.resource.ResourceInitializationException;
 
+import rank.CompositeRanker;
+import rank.IRanker;
+import rank.NgramRanker;
+import rank.OtherRanker;
 import type.Ngram;
 import type.NgramAnnotation;
 import type.NgramSet;
@@ -44,10 +50,40 @@ import type.TestElementAnnotation;
  * Expects each CAS to contain at least one NgramAnnotation.
  * Processes each NgramAnnotation by adding a corresponding AnswerScoringAnnotation to the CAS.
  * 
- * This annotator has no parameters and requires no initialization method.
+ * TODO: This annotator has parameters for the rankers?? which are initialized by its initialize method
  */
-
 public class ScoreAnnotator extends CasAnnotator_ImplBase {	
+
+	IRanker ngramRanker, otherRanker;
+
+	CompositeRanker compositeRanker;
+	/**
+	 * Initialization method for the pi7-kmaki ScoreAnnotator class.
+	 * Instantiates a composite ranker with NgramRanker and OtherRanker rankers
+	 */
+	public void initialize(UimaContext aContext) throws ResourceInitializationException
+	{
+		super.initialize(aContext);
+		/**
+		 * TODO: Clean up this code!
+		 * this.n = (Integer) aContext.getConfigParameterValue("NgramSize");
+		 
+		if(this.n <= 0)
+		{
+			Object[] args = new Object[1];
+			args[0] = this.n;
+			throw new ResourceInitializationException("Cannot instantiate Ngram Annotator with given n",args);
+		}*/
+		// Initialize rankers
+		compositeRanker = new CompositeRanker();
+		ngramRanker = new NgramRanker();
+		otherRanker = new OtherRanker();
+		compositeRanker.addRanker(ngramRanker);
+		compositeRanker.addRanker(otherRanker);
+		
+    }
+	
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void process(CAS aCas) throws AnalysisEngineProcessException {
 		JCas jcas;
