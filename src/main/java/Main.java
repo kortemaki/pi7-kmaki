@@ -38,8 +38,12 @@ public class Main {
     cr.setConfigParameterValue("InputDir", inputDir);
     cr.reconfigure();
 
+    //TODO: Figure this out?
     // Configure your aggregate analysis engine here, if you want to.
-
+    ConfigurableResource aae = (ConfigurableResource) mCPE.getCasProcessors()[0];
+    aae.setConfigParameterValue("NGram1", 1);
+    aae.setConfigParameterValue("NGram2", 1);
+    
     // Configure your CAS consumer with the given output directory. The code below assumes that the
     // CAS consumer has a parameter 'OutputDir' to specify the output directory. The code below
     // assumes that the CAS Consumer can be accessed at index 1 from the array of CasProcessors[]

@@ -180,7 +180,8 @@ public class AnalysisUtils {
 				Collections.swap(list, e.getKey(), e.getValue());
 	}
 
-	public static ConfMatrix getConfMat(Scoring score, JCas jcas) {
+	public static ConfMatrix getConfMat(Scoring score, JCas jcas) 
+	{
 		List<Boolean> correct = getCorrection(score);
 
 		ConfMatrix mat = new ConfMatrix(jcas);
@@ -237,7 +238,8 @@ public class AnalysisUtils {
 		return mat;
 	}
 	
-	public static FSList addPrecisionToFSList(FSList metrics, Scoring score, JCas jcas) {
+	public static FSList addPrecisionToFSList(FSList metrics, Scoring score, JCas jcas) 
+	{
 		List<Boolean> correct = getCorrection(score);
 		float tp = countFirstN(correct,CUTOFF);
 		float fp = CUTOFF - tp;
@@ -285,7 +287,8 @@ public class AnalysisUtils {
 		return metrics;
 	}
 
-	public static FSList addF1MeasToFSList(FSList metrics, Scoring score, JCas jcas) {
+	public static FSList addF1MeasToFSList(FSList metrics, Scoring score, JCas jcas) 
+	{
 		metrics = addPrecisionToFSList(metrics, score, jcas);
 		metrics = addRecallToFSList(metrics, score, jcas);
 		float prec = ((Metric) TypeUtils.getFromFSList(metrics,Metric.class,isPrecision)).getValue();

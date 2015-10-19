@@ -40,22 +40,24 @@ public abstract class CompositeRanker extends AbstractRanker {
   }
 }
 
-class AggregateScoringAPIImpl implements ScoringAPI {
-	public Score score(JCas jcas, IRanker theRanker, Question question, Passage passage) {
-		Score score = null;
-		if( theRanker instanceof CompositeRanker ) {
-			CompositeRanker ranker = (CompositeRanker) theRanker;
-			List<Score> scores = new ArrayList<Score>(ranker.rankers.size()); 
-			for(IRanker r : ranker.rankers)
-				scores.add(r.score(question,passage));
-			score = ranker.compositionAPI.compose(jcas, theRanker, scores);
-		}
-		else
-		{
-			throw new NotImplementedException();
-		}
-		
-		return score;
-	}	
+class AggregateScoringAPIImpl implements ScoringAPI 
+{
+  public Score score(JCas jcas, IRanker theRanker, Question question, Passage passage) 
+  {
+	Score score = null;
+	if( theRanker instanceof CompositeRanker ) 
+	{
+      CompositeRanker ranker = (CompositeRanker) theRanker;
+      List<Score> scores = new ArrayList<Score>(ranker.rankers.size()); 
+      for(IRanker r : ranker.rankers)
+    	scores.add(r.score(question,passage));
+      score = ranker.compositionAPI.compose(jcas, theRanker, scores);
+	}
+	else
+	{
+	  throw new NotImplementedException();
+	}
+	return score;
+  }	
 }
 

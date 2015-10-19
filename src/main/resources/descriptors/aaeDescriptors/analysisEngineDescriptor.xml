@@ -18,10 +18,15 @@
       <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI6.pi6-kmaki.src.main.resources.descriptors.annotatorDescriptors.ScoreAnnotator"/>
     
     </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="NgramAnnotator2">
+      <import name="descriptors.annotatorDescriptors.NgramAnnotator"/>
+    
+    
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>aaeDescriptor</name>
-    <description>This is the analysis aae descriptor for pi6-kmaki.  Follows the same analysis pipeline developed in pi4-kmaki, to annotate, tokenize, ngramize, and rank Passages according to Ngram overlap with their respective Question.</description>
+    <description>This is the analysis aae descriptor for pi7-kmaki.  Follows the same analysis pipeline developed in pi4-kmaki, to annotate, tokenize, ngramize, and rank Passages according to Ngram overlap with their respective Question.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters searchStrategy="language_fallback"/>
@@ -31,7 +36,8 @@
         <node>TestElementAnnotator</node>
         <node>TokenizationAnnotator</node>
         <node>NgramAnnotator</node>
-        <node>ScoreAnnotator</node>
+        <node>NgramAnnotator2</node>
+      <node>ScoreAnnotator</node>
       </fixedFlow>
     </flowConstraints>
     <typePriorities/>

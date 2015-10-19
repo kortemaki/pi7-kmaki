@@ -15,13 +15,15 @@ import type.Score;
  * @author maki
  *
  */
-public class WeightedAverageCompositeRanker extends CompositeRanker {
+public class WeightedAverageCompositeRanker extends CompositeRanker 
+{
   /** Individual rankers */
   public List<Float> weights;
   
   public WeightedAverageCompositeRanker(JCas jcas)
   {
 	super(jcas);
+	this.compositionAPI = new WeightedAverageCompositionAPIImpl();
   }
   public void addWeightedRanker(IRanker ranker, Float weight)
   {
@@ -34,45 +36,36 @@ public class WeightedAverageCompositeRanker extends CompositeRanker {
   };
 }
 
-class IndexedScore extends Score{
-	Double score;
-	int index;
-	
-	IndexedScore(Double s, int i)
-	{
-		this.score = s;
-		this.index = i;
-	}
-}
-
-class WeightedAverageCompositionAPIImpl implements CompositionAPI{
+class WeightedAverageCompositionAPIImpl implements CompositionAPI
+{
   /**
    * Compute the aggregated score by taking a weighted average of scores.
    * IndexedScores make use of the weight assigned to this ranker's list of Weighted Rankers
    */
-  public Score compose(JCas jcas, IRanker theRanker, List<Score> scores) {
-	if(theRanker instanceof WeightedAverageCompositeRanker){
-		WeightedAverageCompositeRanker ranker = (WeightedAverageCompositeRanker) theRanker;
+  public Score compose(JCas jcas, IRanker theRanker, List<Score> scores) 
+  {
+	if(theRanker instanceof WeightedAverageCompositeRanker)
+	{
+	  WeightedAverageCompositeRanker ranker = (WeightedAverageCompositeRanker) theRanker;
 	
-		Double weightedSum = 0.0;
-		for(Score score : scores) {
-			Float weight = (float) 1;
-			
-			if(score instanceof IndexedScore) {	
-				weight = ranker.weights.get(((IndexedScore) score).index);
-			}
-			weightedSum += score.getScore()*weight;    	
-		}
+	  Double weightedSum = 0.0;
+	  int i = 0;
+	  for(Score score : scores) {
+		Float weight = (float) 1;
+		weight = ranker.weights.get(i);
+		weightedSum += score.getScore()*weight;    	
+		i++;
+      }
 		
-		Score score = new Score(jcas);
-		score.setScore(weightedSum/scores.size());
-		score.setComponentId(theRanker.toString());
-		return score;
-		}
-		else 
-		{
-			throw new NotImplementedException();
-		}
-  	}
+	  Score score = new Score(jcas);
+	  score.setScore(weightedSum/scores.size());
+	  score.setComponentId(theRanker.toString());
+	  return score;
+	}
+	else 
+	{
+	  throw new NotImplementedException();
+	}
+  }
 }
 
