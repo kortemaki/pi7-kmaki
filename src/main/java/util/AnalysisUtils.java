@@ -20,7 +20,7 @@ import type.Passage;
 import type.ScoredSpan;
 import type.Scoring;
 import util.ListReverser;
-
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class AnalysisUtils {
 
 	/* The rank at which to compute PRF statistics and confusion matrix */
@@ -29,28 +29,28 @@ public class AnalysisUtils {
 	/**
 	 * Check methods for metrics
 	 */
-	public static Method getName = TypeUtils.instantiateMethod(PAtN.class, "getMetricName");
-	public static Method getN = TypeUtils.instantiateMethod(PAtN.class, "getN");
+	public static Method getName = TypeUtils.instantiateMethod(Metric.class, "getMetricName");
+	public static Method getN    = TypeUtils.instantiateMethod(PAtN.class,   "getN");
 	
-	public static CheckMethod hasN1 = new CheckMethod(getN, 1);
-	public static CheckMethod hasNamePAt1 = new CheckMethod(getName, "Precision at 1.");
-	public static CheckMethod[] isPAt1 = new CheckMethod[]{hasN1, hasNamePAt1};
+	public static CheckMethod   hasN1       = new CheckMethod(getN, 1, int.class);
+	public static CheckMethod   hasNamePAt1 = new CheckMethod(getName, "Precision at 1.",  String.class);
+	public static CheckMethod[] isPAt1      = new CheckMethod[]{hasN1, hasNamePAt1};
 	
-	public static 	CheckMethod hasN5 = new CheckMethod(getN, 5);
-	public static CheckMethod hasNamePAt5 = new CheckMethod(getName, "Precision at 5.");
-	public static CheckMethod[] isPAt5 = new CheckMethod[]{hasN5, hasNamePAt5};
+	public static CheckMethod   hasN5       = new CheckMethod(getN, 5, int.class);
+	public static CheckMethod   hasNamePAt5 = new CheckMethod(getName, "Precision at 5.",  String.class);
+	public static CheckMethod[] isPAt5      = new CheckMethod[]{hasN5, hasNamePAt5};
 	
-	public static 	CheckMethod hasNameRR = new CheckMethod(getName, "Reciprocal rank");
-	public static CheckMethod[] isRR = new CheckMethod[]{hasNameRR};
+	public static CheckMethod   hasNameRR   = new CheckMethod(getName, "Reciprocal rank",  String.class);
+	public static CheckMethod[] isRR        = new CheckMethod[]{hasNameRR};
 		
-	public static CheckMethod hasNameAP = new CheckMethod(getName, "Average precision");
-	public static CheckMethod[] isAP = new CheckMethod[]{hasNameAP};
+	public static CheckMethod   hasNameAP   = new CheckMethod(getName, "Average precision",String.class);
+	public static CheckMethod[] isAP        = new CheckMethod[]{hasNameAP};
 	
-	public static CheckMethod isConfMat = new CheckMethod(getName, "Confusion matrix");
+	public static CheckMethod   isConfMat   = new CheckMethod(getName, "Confusion matrix", String.class);
 	
-	public static CheckMethod isPrecision = new CheckMethod(getName, "Precision");
-	public static CheckMethod isRecall = new CheckMethod(getName, "Recall");
-	public static CheckMethod isF1Meas = new CheckMethod(getName, "F1-score");
+	public static CheckMethod   isPrecision = new CheckMethod(getName, "Precision",String.class);
+	public static CheckMethod   isRecall    = new CheckMethod(getName, "Recall",   String.class);
+	public static CheckMethod   isF1Meas    = new CheckMethod(getName, "F1-score", String.class);
 	
 	/**
 	 * Returns the reciprocal of the smallest rank which gives a correct score
@@ -260,7 +260,7 @@ public class AnalysisUtils {
 			precision.setValue(0);
 		else
 			precision.setValue(tp/(tp+fp));
-		//System.out.printf("%d:+%f-%f=%.3f",correct.size(),tp,fp,precision.getValue());
+		System.out.printf("%d:+%f-%f=%.3f\n",correct.size(),tp,fp,precision.getValue());
 		return metrics;
 	}
 
@@ -283,10 +283,14 @@ public class AnalysisUtils {
 		recall.setComponentId(AnalysisUtils.class.getName());
 		recall.setMetricName("Recall");
 		if(tp == 0)
+		{
 			recall.setValue(0);
+		}
 		else
+		{
 			recall.setValue(tp/(tp+fn));
-		//System.out.printf("%d:+%f-%f=%.3f",correct.size(),tp,fn,recall.getValue());
+		}
+		System.out.printf("%d:+%f-%f=%.3f\n",correct.size(),tp,fn,recall.getValue());
 		return metrics;
 	}
 
@@ -306,6 +310,7 @@ public class AnalysisUtils {
 		f1meas.setComponentId(AnalysisUtils.class.getName());
 		f1meas.setMetricName("F1-Score");
 		f1meas.setValue(2*prec*rec/(prec+rec));
+		System.out.printf("FMEAS:+%f-%f=%f\n", prec,rec,f1meas.getValue());
 		return metrics;
 	}
 }

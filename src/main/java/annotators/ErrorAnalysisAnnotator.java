@@ -40,15 +40,15 @@ public class ErrorAnalysisAnnotator extends CasAnnotator_ImplBase
 			// annot Metrics
 			annot.setMetrics(new EmptyFSList(jcas));
 			
-			///////////////////
-			//Confusion matrix
-			annot.setMetrics(TypeUtils.addToFSList(annot.getMetrics(),AnalysisUtils.getConfMat(score,jcas),jcas));
-			
 			//////
 			//PRF
 			annot.setMetrics(AnalysisUtils.addPrecisionToFSList(annot.getMetrics(),score,jcas));
 			annot.setMetrics(AnalysisUtils.addRecallToFSList(annot.getMetrics(),score,jcas));
 			annot.setMetrics(AnalysisUtils.addF1MeasToFSList(annot.getMetrics(),score,jcas));
+			
+            ///////////////////
+			//Confusion matrix
+			annot.setMetrics(TypeUtils.addToFSList(annot.getMetrics(),AnalysisUtils.getConfMat(score,jcas),jcas));
 			
 			annot.setComponentId(this.getClass().getName());
 			annot.addToIndexes();

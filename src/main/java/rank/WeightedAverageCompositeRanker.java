@@ -28,6 +28,7 @@ public class WeightedAverageCompositeRanker extends CompositeRanker
 	  public WeightedAverageCompositeRankerBuilder()
 	  {
 		  super();
+		  weights = new ArrayList<Float>();
 	  }
 
 	@Override
@@ -80,20 +81,28 @@ class WeightedAverageCompositionAPIImpl implements CompositionAPI
 	  int i = 0;
 	  for(Score score : scores) {
 		Float weight = (float) 1;
-		try 
-		{
-		  weight = ranker.weights.get(i);
-		}
-		catch(Throwable e)
-		{
-		  throw new NotImplementedException(TOO_FEW_WEIGHTS_MSG);
-		}
+	    try 
+	    {	
+	      weight = ranker.weights.get(i);
+	    }	
+	    catch(Throwable e)
+	    {
+	      throw new NotImplementedException(TOO_FEW_WEIGHTS_MSG);
+	    }
 		weightedSum += score.getScore()*weight;    	
-		i++;
-      }
-		
+	    i++;
+	  }
 	  Score score = new Score(jcas);
-	  score.setScore(weightedSum/scores.size());
+	  if(scores.size()==0)
+	  {
+		System.out.println("NO SCORES!?");
+		score.setScore(0);
+	  }
+	  else
+	  {
+		System.out.println(weightedSum);
+		score.setScore(weightedSum/scores.size());
+	  }
 	  score.setComponentId(theRanker.toString());
 	  return score;
 	}

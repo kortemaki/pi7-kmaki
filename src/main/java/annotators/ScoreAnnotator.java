@@ -71,35 +71,37 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 		try 
 		{
 			this.rankerBuilder = (IRankerBuilder) Class.forName(RANKER_BUILDER).newInstance();
-
-			//TODO: Parameterize these configurations somehow?
-			//At the very least, they could be put in the XML descriptor for this annotator...
-			if(this.rankerBuilder instanceof WeightedAverageCompositeRankerBuilder)
-			{
-				IRankerBuilder ngramRankerBuilder = new NgramRankerBuilder(); //Can also take checkMethods...
-				IRankerBuilder otherRankerBuilder = new OtherRankerBuilder();
-				
-				((WeightedAverageCompositeRankerBuilder) rankerBuilder).addRankerBuilder(ngramRankerBuilder);
-				((WeightedAverageCompositeRankerBuilder) rankerBuilder).addRankerBuilder(otherRankerBuilder);
-				((WeightedAverageCompositeRankerBuilder) rankerBuilder).addWeight((float) 2);
-				((WeightedAverageCompositeRankerBuilder) rankerBuilder).addWeight((float) 1);
-			} 
-			else if(this.rankerBuilder instanceof NgramRankerBuilder)
-			{
-				//TODO
-			} 
-			else if(this.rankerBuilder instanceof OtherRankerBuilder)
-			{
-				//TODO
-			}
-		} 
-		catch (Throwable e) 
+		}
+		catch(Throwable e)
 		{
 			Object[] args = new Object[1];
 			args[0] = e;
 			throw new ResourceInitializationException("Could not instantiate ranker builder " + RANKER_BUILDER +
 						": check settings for configuration parameter RankerBuilder",args);
 		}
+		
+		//TODO: Parameterize these configurations somehow?
+		//At the very least, they could be put in the XML descriptor for this annotator...
+		if(this.rankerBuilder instanceof WeightedAverageCompositeRankerBuilder)
+		{
+			IRankerBuilder ngramRankerBuilder = new NgramRankerBuilder(); //Can also take checkMethods...
+			IRankerBuilder otherRankerBuilder = new OtherRankerBuilder();
+			
+			((WeightedAverageCompositeRankerBuilder) rankerBuilder).addRankerBuilder(ngramRankerBuilder);
+			((WeightedAverageCompositeRankerBuilder) rankerBuilder).addRankerBuilder(otherRankerBuilder);
+			((WeightedAverageCompositeRankerBuilder) rankerBuilder).addWeight((float) 1);
+			((WeightedAverageCompositeRankerBuilder) rankerBuilder).addWeight((float) 1);
+			System.out.println("FNORD");
+		} 
+		else if(this.rankerBuilder instanceof NgramRankerBuilder)
+		{
+			//TODO
+		} 
+		else if(this.rankerBuilder instanceof OtherRankerBuilder)
+		{
+			//TODO
+		}
+		
     }
 	
 	
@@ -152,6 +154,8 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 				span.setComponentId(this.getClass().getName());
 				
 				Score score = ranker.score(question, passage);
+				
+				System.out.println("Score: "+score.getScore());
 				
 				span.setScore(score);
 				span.addToIndexes();

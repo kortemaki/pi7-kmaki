@@ -87,6 +87,7 @@ public class NgramRanker extends AbstractRanker
  * @author maki
  *
  */
+@SuppressWarnings("rawtypes")
 class NgramScoringAPIImpl implements ScoringAPI
 {
 	CheckMethod[] checkMethods;
@@ -125,7 +126,7 @@ class NgramScoringAPIImpl implements ScoringAPI
 			for(TOP passageNgrams : passageNgramSets)
 			{
 				FSArray ptokens = ((NgramSet) passageNgrams).getNgrams();
-				total += this.tokenOverlap(qtokens, ptokens);
+				total += tokenOverlap(qtokens, ptokens);
 				count++;
 			}
 		}
@@ -145,7 +146,7 @@ class NgramScoringAPIImpl implements ScoringAPI
 	 * 
 	 * @return
 	 */
-	private float tokenOverlap(FSArray tokens1, FSArray tokens2) 
+	private static float tokenOverlap(FSArray tokens1, FSArray tokens2) 
 	{
 		if (tokens1 == null || tokens2 == null)
 			return 0;
@@ -176,7 +177,7 @@ class NgramScoringAPIImpl implements ScoringAPI
 	 * @param ngram2 The second ngram to compare
 	 * @return
 	 */
-	private boolean sameNgram(Ngram ngram1, Ngram ngram2) 
+	private static boolean sameNgram(Ngram ngram1, Ngram ngram2) 
 	{
 		if (ngram1.getN() != ngram2.getN())
 			return false;
