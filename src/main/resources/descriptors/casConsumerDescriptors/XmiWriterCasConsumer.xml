@@ -47,7 +47,6 @@
     <typeSystemDescription>
       <imports>
         <import name="org.apache.uima.examples.SourceDocumentInformation"/>
-      <import location="/media/maki/OS/Users/Keith/Documents/CMU/Coursework/11791/PI5/pi5-kmaki/src/main/resources/descriptors/typeSystem.xml"/>
       </imports>
     </typeSystemDescription>
     <capabilities>

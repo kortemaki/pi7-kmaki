@@ -12,7 +12,7 @@
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>ErrorAnalysisEngineDescriptor</name>
-    <description>Analysis engine for pi6-kmaki.  Handles the computation of error statistics for each test element such as precision, recall, and f-measure.</description>
+    <description>Analysis engine for pi7-kmaki.  Handles the computation of error statistics for each test element such as precision, recall, and f-measure.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters/>

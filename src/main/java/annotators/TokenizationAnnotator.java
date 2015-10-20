@@ -70,7 +70,10 @@ public class TokenizationAnnotator extends CasAnnotator_ImplBase {
 			// Create the TokenAnnotation for this test element
 			TokenAnnotation annot = new TokenAnnotation(jcas); 
 			Question question = te.getQuestion();
-			annot.setQuestionTokens(this.tokenize(question,jcas));
+			TokenizedSpan qtokens = this.tokenize(question, jcas);
+			annot.setQuestionTokens(qtokens);
+			question.setAnalysisAnnotations(
+					TypeUtils.addToFSList(question.getAnalysisAnnotations(),qtokens,jcas));
 			FSList passages = question.getPassages();
 			FSList passtoks = new EmptyFSList(jcas);
 			while(!(passages instanceof EmptyFSList))
@@ -89,8 +92,6 @@ public class TokenizationAnnotator extends CasAnnotator_ImplBase {
 			annot.setBegin(te.getBegin());
 			annot.setEnd(te.getEnd());
 			annot.setOrig(te);
-			question.setAnalysisAnnotations(
-					TypeUtils.addToFSList(question.getAnalysisAnnotations(),annot,jcas));
 			annot.setComponentId(this.getClass().getName());
 			annot.addToIndexes();
 			System.out.println("    Tokenized document " + question.getId() + ".");

@@ -133,7 +133,6 @@ public class TypeUtils {
 					}
 				}
 				results.add(el);
-				System.out.println(type);
 			}
 			catch(Throwable e)
 			{

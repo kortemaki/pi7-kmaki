@@ -10,11 +10,46 @@ import type.Passage;
 import type.Question;
 
 /**
- * This class provides a skeletal implementation of interface IRanker.
+ * AbstractRanker abstract class for pi7-kmaki
+ * Describes a general ranker class which assigns similarity scores
+ *   to question-passage pairs using a ScoringAPI.score method.
+ *   
+ * The Bridge pattern helps to decouple the AbstractRanker class and extending subclasses
+ *   from the ScoringAPI interface class describing the method of scoring.
+ *   This helps to keep the ScoringAPI class focused, organized, and reusable,
+ *   but also enables more flexibility in the Ranker class implementations.
+ *   
+ * The Builder pattern is used to ensure that changes to the AbstractRanker instantiation
+ *   do not directly impact User class code, and changes to User class code likewise do not
+ *   necessitate changes to the AbstractRanker instantiation.
+ *   
+ *   This pattern has the added benefit that rankers may be instantiated cleanly
+ *     within different JCas environments by the same Builder instance.
  */
 public abstract class AbstractRanker implements IRanker {
   JCas jcas;
   protected ScoringAPI scoringAPI;
+ 
+  /**
+   * Abstract builder class for Rankers
+   * 
+   * @author maki
+   *
+   */
+  abstract static class AbstractRankerBuilder implements IRankerBuilder
+  {
+  	JCas jcas;
+  	public void setJCas(JCas jcas)
+  	{
+  		this.jcas = jcas;
+  	}	
+  	public abstract IRanker instantiateRanker();
+  }
+  
+  public AbstractRanker(AbstractRankerBuilder builder)
+  {
+	  this.jcas = builder.jcas;
+  }
   
   /**
    * Sorts the given list of passages associated with the given question, and returns a ranked list
@@ -43,7 +78,7 @@ public abstract class AbstractRanker implements IRanker {
    * @return
    */
   public Score score(Question question, Passage passage) {
-	return this.scoringAPI.score(this.jcas, this, question,passage);
+	return this.scoringAPI.score(this.jcas, this, question, passage);
   }
 
   /**

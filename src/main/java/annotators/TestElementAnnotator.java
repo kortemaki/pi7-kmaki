@@ -1,6 +1,7 @@
 package annotators;
 
 import java.util.Arrays;
+
 import org.apache.uima.analysis_component.CasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.CAS;
@@ -10,6 +11,7 @@ import org.apache.uima.jcas.cas.EmptyFSList;
 import org.apache.uima.jcas.cas.FSList;
 import org.apache.uima.jcas.cas.NonEmptyFSList;
 
+import type.Passage;
 import type.Question;
 import type.Span;
 import type.TestElementAnnotation;
@@ -95,13 +97,13 @@ public class TestElementAnnotator extends CasAnnotator_ImplBase
 		for(String passage : passages)
 		{
 			//Annotate the raw passage string
-			type.Passage tePassage = new type.Passage(jcas); 
+			Passage tePassage = new Passage(jcas); 
 			tePassage.setBegin(index + 1);
 			index = index + 1 + passage.length();
 			tePassage.setEnd(index);
 			tePassage.setText(passage);
 			
-			//Identify and annotate the passage span
+			//Identify and annotate the passage span of interest
 			String sourceDocID = passage.split(WHITESPACE)[1];
 			String label = passage.split(WHITESPACE)[2];
 			int textStart = qnum.length() + sourceDocID.length() + label.length() + 3; 
@@ -111,6 +113,8 @@ public class TestElementAnnotator extends CasAnnotator_ImplBase
 			passageSpan.setEnd(passageSpan.getBegin() + passageSpan.getText().length());
 			passageSpan.setComponentId(this.getClass().getName());
 			passageSpan.addToIndexes();
+			
+			//Finish up with this passage
 			tePassage.setPassage(passageSpan);
 			tePassage.setAnalysisAnnotations(new EmptyFSList(jcas));
 			tePassage.setSourceDocId(sourceDocID);

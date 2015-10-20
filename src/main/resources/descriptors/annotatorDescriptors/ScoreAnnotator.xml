@@ -7,8 +7,23 @@
     <description>The Scoring analysis engine for pi5-kmaki.  Evaluates the ngram overlap between each Passage and its Question, and annotates the Test Element with a ScoringAnnotation.</description>
     <version>1.0</version>
     <vendor/>
-    <configurationParameters/>
-    <configurationParameterSettings/>
+    <configurationParameters>
+      <configurationParameter>
+        <name>RankerBuilder</name>
+        <description>The name of the IRankerBuilder implementation to use for instantiating the IRanker to use for scoring.</description>
+        <type>String</type>
+        <multiValued>false</multiValued>
+        <mandatory>true</mandatory>
+      </configurationParameter>
+    </configurationParameters>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>RankerBuilder</name>
+        <value>
+          <string>rank.WeightedAverageCompositeRanker$WeightedAverageCompositeRankerBuilder</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
     <typeSystemDescription/>
     <typePriorities/>
     <fsIndexCollection/>

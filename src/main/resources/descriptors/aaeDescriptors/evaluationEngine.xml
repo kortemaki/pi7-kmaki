@@ -4,15 +4,15 @@
   <primitive>false</primitive>  
   <delegateAnalysisEngineSpecifiers>
     <delegateAnalysisEngine key="PerformanceAnnotator">
-      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI6.pi6-kmaki.src.main.resources.descriptors.annotatorDescriptors.PerformanceAnnotator"/>
+      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI7.pi7-kmaki.src.main.resources.descriptors.annotatorDescriptors.PerformanceAnnotator"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="OutputAnnotator">
-      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI6.pi6-kmaki.src.main.resources.descriptors.annotatorDescriptors.OutputAnnotator"/>
+      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI7.pi7-kmaki.src.main.resources.descriptors.annotatorDescriptors.OutputAnnotator"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>evaluationEngine</name>
-    <description>The evaluation aae for pi5-kmaki.  Annotates each test element with the performance attained by each ScoringAnnotation present in the CAS, then compiles the performance metrics into an easy-to-consume output format.</description>
+    <description>The evaluation aae for pi7-kmaki.  Annotates each test element with the performance attained by each ScoringAnnotation present in the CAS, then compiles the performance metrics into an easy-to-consume output format.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters/>

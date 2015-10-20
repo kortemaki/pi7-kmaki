@@ -4,18 +4,18 @@
   <primitive>false</primitive>  
   <delegateAnalysisEngineSpecifiers>
     <delegateAnalysisEngine key="TestElementAnnotator">
-      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI6.pi6-kmaki.src.main.resources.descriptors.annotatorDescriptors.TestElementAnnotator"/>
+      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI7.pi7-kmaki.src.main.resources.descriptors.annotatorDescriptors.TestElementAnnotator"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="TokenizationAnnotator">
-      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI6.pi6-kmaki.src.main.resources.descriptors.annotatorDescriptors.TokenizationAnnotator"/>
+      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI7.pi7-kmaki.src.main.resources.descriptors.annotatorDescriptors.TokenizationAnnotator"/>
     
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="NgramAnnotator">
-      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI6.pi6-kmaki.src.main.resources.descriptors.annotatorDescriptors.NgramAnnotator"/>
+      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI7.pi7-kmaki.src.main.resources.descriptors.annotatorDescriptors.NgramAnnotator"/>
     
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="ScoreAnnotator">
-      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI6.pi6-kmaki.src.main.resources.descriptors.annotatorDescriptors.ScoreAnnotator"/>
+      <import name=".media.maki.OS.Users.Keith.Documents.CMU.Coursework.11791.PI7.pi7-kmaki.src.main.resources.descriptors.annotatorDescriptors.ScoreAnnotator"/>
     
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>

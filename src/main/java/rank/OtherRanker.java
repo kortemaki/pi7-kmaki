@@ -8,12 +8,19 @@ import type.Score;
 
 public class OtherRanker extends AbstractRanker {
 
-  public OtherRanker(JCas jcas)
+  public static class OtherRankerBuilder extends AbstractRankerBuilder {
+
+	public IRanker instantiateRanker() {
+		return new OtherRanker(this);
+	}
+	
+  }
+	
+  public OtherRanker(OtherRankerBuilder builder)
   {
-	  this.jcas = jcas;
+	  super(builder);
 	  this.scoringAPI = new OtherScoringAPIImpl();
   }
-
 }
 
 /**

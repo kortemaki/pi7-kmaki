@@ -32,9 +32,10 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import rank.IRanker;
-import rank.NgramRanker;
-import rank.OtherRanker;
-import rank.WeightedAverageCompositeRanker;
+import rank.IRanker.IRankerBuilder;
+import rank.NgramRanker.NgramRankerBuilder;
+import rank.OtherRanker.OtherRankerBuilder;
+import rank.WeightedAverageCompositeRanker.WeightedAverageCompositeRankerBuilder;
 import type.Passage;
 import type.Question;
 import type.ScoredSpan;
@@ -48,13 +49,12 @@ import type.Score;
  * Expects each CAS to contain at least one NgramAnnotation.
  * Processes each NgramAnnotation by adding a corresponding AnswerScoringAnnotation to the CAS.
  * 
- * TODO: This annotator has parameters for the rankers?? which are initialized by its initialize method
+ * TODO: It may be useful to implement arbitrary parameters for the rankers??
  */
 public class ScoreAnnotator extends CasAnnotator_ImplBase {	
 
-	IRanker ngramRanker, otherRanker;
+	IRankerBuilder rankerBuilder;
 
-	WeightedAverageCompositeRanker compositeRanker;
 	/**
 	 * Initialization method for the pi7-kmaki ScoreAnnotator class.
 	 * Instantiates a composite ranker with NgramRanker and OtherRanker rankers
@@ -62,18 +62,44 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 	public void initialize(UimaContext aContext) throws ResourceInitializationException
 	{
 		super.initialize(aContext);
-		/**
-		 * TODO: Clean up this code!
-		 * this.n = (Integer) aContext.getConfigParameterValue("NgramSize");
-		 
-		if(this.n <= 0)
+		
+		System.out.println(WeightedAverageCompositeRankerBuilder.class.getName());
+		
+		final String RANKER_BUILDER = (String) aContext.getConfigParameterValue("RankerBuilder");
+		
+		//Make the builder for the ranker
+		try 
+		{
+			this.rankerBuilder = (IRankerBuilder) Class.forName(RANKER_BUILDER).newInstance();
+
+			//TODO: Parameterize these configurations somehow?
+			//At the very least, they could be put in the XML descriptor for this annotator...
+			if(this.rankerBuilder instanceof WeightedAverageCompositeRankerBuilder)
+			{
+				IRankerBuilder ngramRankerBuilder = new NgramRankerBuilder(); //Can also take checkMethods...
+				IRankerBuilder otherRankerBuilder = new OtherRankerBuilder();
+				
+				((WeightedAverageCompositeRankerBuilder) rankerBuilder).addRankerBuilder(ngramRankerBuilder);
+				((WeightedAverageCompositeRankerBuilder) rankerBuilder).addRankerBuilder(otherRankerBuilder);
+				((WeightedAverageCompositeRankerBuilder) rankerBuilder).addWeight((float) 2);
+				((WeightedAverageCompositeRankerBuilder) rankerBuilder).addWeight((float) 1);
+			} 
+			else if(this.rankerBuilder instanceof NgramRankerBuilder)
+			{
+				//TODO
+			} 
+			else if(this.rankerBuilder instanceof OtherRankerBuilder)
+			{
+				//TODO
+			}
+		} 
+		catch (Throwable e) 
 		{
 			Object[] args = new Object[1];
-			args[0] = this.n;
-			throw new ResourceInitializationException("Cannot instantiate Ngram Annotator with given n",args);
-		}*/
-		
-		//make builders for the rankers?
+			args[0] = e;
+			throw new ResourceInitializationException("Could not instantiate ranker builder " + RANKER_BUILDER +
+						": check settings for configuration parameter RankerBuilder",args);
+		}
     }
 	
 	
@@ -86,14 +112,11 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 			throw new AnalysisEngineProcessException(e);
 		}
 		
-		//TODO: give the ranker builder the jcas
+		//TODO: give the ranker builder the jcas and get the result
 		
-		// Initialize rankers
-		compositeRanker = new WeightedAverageCompositeRanker(jcas);
-		ngramRanker = new NgramRanker(jcas);
-		otherRanker = new OtherRanker(jcas);
-		compositeRanker.addWeightedRanker(ngramRanker,(float) 1);
-		compositeRanker.addWeightedRanker(otherRanker,(float) 1);
+		// Initialize ranker
+		this.rankerBuilder.setJCas(jcas);
+		IRanker ranker = rankerBuilder.instantiateRanker();
 		
 		// Get the Ngram Annotations for each Test Element in the document
 		FSIndex<TestElementAnnotation> fs = (FSIndex) jcas.getAnnotationIndex(TestElementAnnotation.type);
@@ -128,7 +151,7 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 				span.setOrig(passage);
 				span.setComponentId(this.getClass().getName());
 				
-				Score score = compositeRanker.score(question, passage);
+				Score score = ranker.score(question, passage);
 				
 				span.setScore(score);
 				span.addToIndexes();

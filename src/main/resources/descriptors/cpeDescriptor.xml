@@ -9,7 +9,7 @@
                 <nameValuePair>
                     <name>InputDir</name>
                     <value>
-                        <string>/media/maki/OS/Users/Keith/Documents/CMU/Coursework/11791/PI6/pi6-kmaki/src/main/resources/inputData/</string>
+                        <string>/media/maki/OS/Users/Keith/Documents/CMU/Coursework/11791/PI7/pi7-kmaki/src/main/resources/inputData/</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>
@@ -43,7 +43,7 @@
             <nameValuePair>
                 <name>OutputDir</name>
                 <value>
-                    <string>/media/maki/OS/Users/Keith/Documents/CMU/Coursework/11791/PI6/pi6-kmaki/src/main/resources/outputData</string>
+                    <string>/media/maki/OS/Users/Keith/Documents/CMU/Coursework/11791/PI7/pi7-kmaki/src/main/resources/outputData</string>
                 </value>
             </nameValuePair>
             <nameValuePair>

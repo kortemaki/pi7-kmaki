@@ -12,7 +12,7 @@
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>aaeDescriptor</name>
-    <description>The Aggregate Analysis Engine for pi6-kmaki.  Chains the analysis and error analysis aaes in sequence in order to analyze performance of the analysis system.</description>
+    <description>The Aggregate Analysis Engine for pi7-kmaki.  Chains the analysis and error analysis aaes in sequence in order to analyze performance of the analysis system.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters/>

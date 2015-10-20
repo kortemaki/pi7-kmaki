@@ -11,47 +11,107 @@ import type.Question;
 import type.Score;
 
 /*
- * TODO: documentation
+ * CompositeRanker abstract class for pi7-kmaki
+ * Describes a general ranker class which aggregates scores
+ *   from one or more rankers using the CompositionAPI.compose method.
+ *   
+ * The Bridge pattern helps to decouple the abstract CompositeRanker class and extending subclasses
+ *   from the CompositionAPI interface class describing the method of composition.
+ *   
+ * The Builder pattern is used to ensure that changes to the CompositeRanker instantiation
+ *   do not directly impact User class code, and changes to User class code likewise do not
+ *   necessitate changes to the CompositeRanker instantiation.
+ *   
+ *   This pattern has the added benefit that rankers may be instantiated cleanly
+ *     within different JCas environments by the same Builder instance.
  */
-public abstract class CompositeRanker extends AbstractRanker {
+public abstract class CompositeRanker extends AbstractRanker 
+{
 
   List<IRanker> rankers;
   protected CompositionAPI compositionAPI;
   
-  public CompositeRanker(JCas jcas) {
-    rankers = new ArrayList<IRanker>();
-    this.scoringAPI = new AggregateScoringAPIImpl();
-    this.jcas = jcas;
-  }
-
-  public void addRanker(IRanker ranker)
+  /**
+   * Abstract Builder class for the CompositeRanker
+   * 
+   * Handles the list of IRankerBuilders 
+   *   with which to build the rankers for the composite ranker
+   *
+   * @author maki
+   */
+  public abstract static class CompositeRankerBuilder extends AbstractRankerBuilder
   {
-	  rankers.add(ranker);
-  };
+    List<IRankerBuilder> rankerBuilders;
+	 
+	public CompositeRankerBuilder()
+	{
+	  rankerBuilders = new ArrayList<IRankerBuilder>();
+	}
+	  
+	public void addRankerBuilder( IRankerBuilder builder )
+	{
+	  rankerBuilders.add( builder );
+	};
+	  
+	/**
+	 * Method to change the JCas for future CompositeRanker builds
+	 * For convenience, also changes the jcas for any added rankers.
+	 */
+	@Override
+	public void setJCas( JCas jcas )
+	{
+	  super.setJCas( jcas );
+	  for( IRankerBuilder builder : rankerBuilders )
+	  {
+	    builder.setJCas( jcas );
+	  }
+	}
+  }
+  
+  public CompositeRanker( CompositeRankerBuilder builder ) 
+  {
+	super(builder);
+    rankers = new ArrayList<IRanker>();
+    for( IRankerBuilder r : builder.rankerBuilders )
+    {
+    	rankers.add( r.instantiateRanker() );
+    }
+    this.scoringAPI = new AggregateScoringAPIImpl();
+  }
   
   public String toString()
   {
-	  List<String> rankerStrings = new ArrayList<String>(rankers.size());
-	  for(IRanker ranker : rankers)
+	  List<String> rankerStrings = new ArrayList<String>( rankers.size() );
+	  for( IRanker ranker : rankers )
 	  {
-		  rankerStrings.add(ranker.toString());
+		  rankerStrings.add( ranker.toString() );
 	  }
 	  return this.getClass().getName()+":{ " + String.join(", ",rankerStrings) + " }";
   }
 }
 
+/**
+ * Aggregate ScoringAPI implementation for pi7-kmaki
+ * 
+ * Aggregates the scores given to a question-passage pair 
+ *   under all component rankers included in CompositeRanker theRanker 
+ *   by using theRanker's CompositionAPI.compose function
+ *   
+ * @requires theRanker instanceof CompositeRanker
+ * @author maki
+ */
 class AggregateScoringAPIImpl implements ScoringAPI 
 {
-  public Score score(JCas jcas, IRanker theRanker, Question question, Passage passage) 
+  public Score score( JCas jcas, IRanker theRanker, Question question, Passage passage ) 
   {
 	Score score = null;
 	if( theRanker instanceof CompositeRanker ) 
 	{
       CompositeRanker ranker = (CompositeRanker) theRanker;
-      List<Score> scores = new ArrayList<Score>(ranker.rankers.size()); 
-      for(IRanker r : ranker.rankers)
-    	scores.add(r.score(question,passage));
-      score = ranker.compositionAPI.compose(jcas, theRanker, scores);
+      List<Score> scores = new ArrayList<Score>( ranker.rankers.size() ); 
+      for( IRanker r : ranker.rankers )
+    	scores.add( r.score(question,passage) );
+      score = ranker.compositionAPI.compose( jcas, theRanker, scores );
 	}
 	else
 	{

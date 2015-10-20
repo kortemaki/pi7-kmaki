@@ -108,11 +108,11 @@ public class NgramAnnotator extends CasAnnotator_ImplBase {
 			annot.setPassageNgrams(passagesNgrams);
 			annot.setBegin(te.getBegin());
 			annot.setEnd(te.getEnd());
-			Question orig = (Question) te.getOrig();
+			Question orig = (Question) ((TestElementAnnotation)te.getOrig()).getQuestion();
 			annot.setOrig(orig);
 			orig.setAnalysisAnnotations(
-					TypeUtils.addToFSList(orig.getAnalysisAnnotations(),annot,jcas));
-			
+					TypeUtils.addToFSList(
+					orig.getAnalysisAnnotations(),annot.getQuestionNgrams(),jcas));
 			annot.setComponentId(NAME);
 			annot.addToIndexes();
 			System.out.println("    Annotated ngrams in document " + ((TestElementAnnotation) te.getOrig()).getQuestion().getId() + ".");
