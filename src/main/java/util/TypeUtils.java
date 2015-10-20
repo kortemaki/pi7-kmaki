@@ -10,6 +10,7 @@ import org.apache.uima.jcas.cas.FSList;
 import org.apache.uima.jcas.cas.NonEmptyFSList;
 import org.apache.uima.jcas.cas.TOP;
 
+@SuppressWarnings("rawtypes")
 public class TypeUtils {
 	
 	public <T> boolean isClass(Object obj, Class<T> clazz)
@@ -91,6 +92,7 @@ public class TypeUtils {
 	 * @param checkMethods the CheckMethod conditions with which to identify matching instances
 	 * @return the matched element (if any), else null
 	 */
+	@SuppressWarnings("rawtypes")
 	public static <T> TOP getFromFSList(FSList list, Class<?> cls, CheckMethod... checkMethods)
 	{
 		//System.out.println("        Calling getAllFromFSList...");
@@ -110,6 +112,7 @@ public class TypeUtils {
 	 * @param checkMethods the CheckMethod conditions required to identify matching instances
 	 * @return a List<TOP> of the matched elements (if any)
 	 */
+	@SuppressWarnings("rawtypes")
 	public static <T> List<TOP> getAllFromFSList(FSList list, Class<?> type, CheckMethod... checkMethods)
 	{
 		List<TOP> results = new LinkedList<TOP>();

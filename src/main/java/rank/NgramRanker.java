@@ -55,6 +55,7 @@ public class NgramRanker extends AbstractRanker
      *      
      *   Inherits the setJCas(JCas jcas) method from AbstractRankerBuilder
      */
+	@SuppressWarnings("rawtypes")
     public static class NgramRankerBuilder extends AbstractRankerBuilder{
     	CheckMethod[] checkMethods;
     	

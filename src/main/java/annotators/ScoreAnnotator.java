@@ -114,9 +114,7 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 			throw new AnalysisEngineProcessException(e);
 		}
 		
-		//TODO: give the ranker builder the jcas and get the result
-		
-		// Initialize ranker
+		//Give the builder the current sofa jcas and build the ranker
 		this.rankerBuilder.setJCas(jcas);
 		IRanker ranker = rankerBuilder.instantiateRanker();
 		
