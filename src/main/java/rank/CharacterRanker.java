@@ -1,31 +1,24 @@
 package rank;
 
-import java.util.List;
-
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.cas.FSArray;
-import org.apache.uima.jcas.cas.TOP;
-
-import type.NgramSet;
 import type.Passage;
 import type.Question;
 import type.Score;
-import util.TypeUtils;
 
-public class OtherRanker extends AbstractRanker {
+public class CharacterRanker extends AbstractRanker {
 
-  public static class OtherRankerBuilder extends AbstractRankerBuilder {
+  public static class CharacterRankerBuilder extends AbstractRankerBuilder {
 
 	public IRanker instantiateRanker() {
-		return new OtherRanker(this);
+		return new CharacterRanker(this);
 	}
 	
   }
 	
-  public OtherRanker(OtherRankerBuilder builder)
+  public CharacterRanker(CharacterRankerBuilder builder)
   {
 	  super(builder);
-	  this.scoringAPI = new OtherScoringAPIImpl();
+	  this.scoringAPI = new CharacterScoringAPIImpl();
   }
 }
 
@@ -36,7 +29,7 @@ public class OtherRanker extends AbstractRanker {
  * 
  * @author maki
  */
-class OtherScoringAPIImpl implements ScoringAPI
+class CharacterScoringAPIImpl implements ScoringAPI
 {
 	/**
 	 * Returns a score of the given passage associated with the given question.

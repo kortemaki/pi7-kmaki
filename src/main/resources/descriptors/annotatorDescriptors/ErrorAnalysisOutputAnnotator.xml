@@ -4,7 +4,7 @@
   <primitive>true</primitive>  <annotatorImplementationName>annotators.ErrorAnalysisOutputAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>ErrorAnalysisOutputAnnotator</name>
-    <description>The output annotator for pi6-kmaki.  Compiles the relevant Metric annotations from the test element's ReportAnnotationinto an easy-to-consume OutputAnnotation containing a pre-formatted output string summary.</description>
+    <description>The output annotator for pi7-kmaki.  Compiles the relevant Metric annotations from the test element's ReportAnnotationinto an easy-to-consume OutputAnnotation containing a pre-formatted output string summary.</description>
     <version>1.0</version>
     <vendor/>
     <configurationParameters/>

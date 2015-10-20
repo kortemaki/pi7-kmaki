@@ -34,7 +34,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import rank.IRanker;
 import rank.IRanker.IRankerBuilder;
 import rank.NgramRanker.NgramRankerBuilder;
-import rank.OtherRanker.OtherRankerBuilder;
+import rank.CharacterRanker.CharacterRankerBuilder;
 import rank.WeightedAverageCompositeRanker.WeightedAverageCompositeRankerBuilder;
 import type.Passage;
 import type.Question;
@@ -82,10 +82,11 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 		
 		//TODO: Parameterize these configurations somehow?
 		//At the very least, they could be put in the XML descriptor for this annotator...
+		//Additionally, it may be possible to parse these more elegantly using Reflection. 
 		if(this.rankerBuilder instanceof WeightedAverageCompositeRankerBuilder)
 		{
 			IRankerBuilder ngramRankerBuilder = new NgramRankerBuilder(); //Can also take checkMethods...
-			IRankerBuilder otherRankerBuilder = new OtherRankerBuilder();
+			IRankerBuilder otherRankerBuilder = new CharacterRankerBuilder();
 			
 			((WeightedAverageCompositeRankerBuilder) rankerBuilder).addRankerBuilder(ngramRankerBuilder);
 			((WeightedAverageCompositeRankerBuilder) rankerBuilder).addRankerBuilder(otherRankerBuilder);
@@ -95,11 +96,11 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 		} 
 		else if(this.rankerBuilder instanceof NgramRankerBuilder)
 		{
-			//TODO
+			//Parameters for NgramRankerBuilder here
 		} 
-		else if(this.rankerBuilder instanceof OtherRankerBuilder)
+		else if(this.rankerBuilder instanceof CharacterRankerBuilder)
 		{
-			//TODO
+			//Parameters for CharacterRankerBuilder here
 		}
 		
     }

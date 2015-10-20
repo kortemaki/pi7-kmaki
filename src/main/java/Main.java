@@ -41,10 +41,10 @@ public class Main {
 
     //TODO: Figure this out?
     // Configure your aggregate analysis engine here, if you want to.
-    ConfigurableResource aecr = (ConfigurableResource) mCPE.getCasProcessors()[0];
-    AnalysisEngine aae = (AnalysisEngine) aecr;
-    aae.setConfigParameterValue("NGramWidth1", 1);
-    aae.setConfigParameterValue("NGramWidth2", 2);
+    //ConfigurableResource aecr = (ConfigurableResource) mCPE.getCasProcessors()[0];
+    //AnalysisEngine aae = (AnalysisEngine) aecr;
+    //aae.setConfigParameterValue("NGramWidth1", 1);
+    //aae.setConfigParameterValue("NGramWidth2", 2);
     
     // Configure your CAS consumer with the given output directory. The code below assumes that the
     // CAS consumer has a parameter 'OutputDir' to specify the output directory. The code below
