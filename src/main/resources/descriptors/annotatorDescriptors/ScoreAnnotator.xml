@@ -20,7 +20,7 @@
       <nameValuePair>
         <name>RankerBuilder</name>
         <value>
-          <string>rank.WeightedAverageCompositeRanker$WeightedAverageCompositeRankerBuilder</string>
+          <string>rank.CharacterRanker$CharacterRankerBuilder</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

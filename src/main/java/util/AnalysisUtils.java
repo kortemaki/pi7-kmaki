@@ -260,7 +260,7 @@ public class AnalysisUtils {
 			precision.setValue(0);
 		else
 			precision.setValue(tp/(tp+fp));
-		System.out.printf("%d:+%f-%f=%.3f\n",correct.size(),tp,fp,precision.getValue());
+		//System.out.printf("%d:+%f-%f=%.3f\n",correct.size(),tp,fp,precision.getValue());
 		return metrics;
 	}
 
@@ -290,7 +290,7 @@ public class AnalysisUtils {
 		{
 			recall.setValue(tp/(tp+fn));
 		}
-		System.out.printf("%d:+%f-%f=%.3f\n",correct.size(),tp,fn,recall.getValue());
+		//System.out.printf("%d:+%f-%f=%.3f\n",correct.size(),tp,fn,recall.getValue());
 		return metrics;
 	}
 
@@ -310,7 +310,7 @@ public class AnalysisUtils {
 		f1meas.setComponentId(AnalysisUtils.class.getName());
 		f1meas.setMetricName("F1-Score");
 		f1meas.setValue(2*prec*rec/(prec+rec));
-		System.out.printf("FMEAS:+%f-%f=%f\n", prec,rec,f1meas.getValue());
+		//System.out.printf("FMEAS:+%f-%f=%f\n", prec,rec,f1meas.getValue());
 		return metrics;
 	}
 }

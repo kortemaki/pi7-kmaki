@@ -154,7 +154,7 @@ public class ScoreAnnotator extends CasAnnotator_ImplBase {
 				
 				Score score = ranker.score(question, passage);
 				
-				System.out.println("Score: "+score.getScore());
+				//System.out.println("Score: "+score.getScore());
 				
 				span.setScore(score);
 				span.addToIndexes();

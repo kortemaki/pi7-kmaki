@@ -30,7 +30,7 @@ public class CheckMethod<T extends Comparable<T>> {
 		//	System.out.println("Invoking "+this.method+".");
 		try {
 			Object comparison = (this.value).compareTo(this.clazz.cast(this.method.invoke(t)));
-			System.out.println(this.value + ".compareTo( " + this.method.invoke(t) + " ) = " + comparison);
+			//System.out.println(this.value + ".compareTo( " + this.method.invoke(t) + " ) = " + comparison);
 			return comparison;
 		} catch (Throwable e) {
 			throw new IllegalArgumentException(e.getMessage());
